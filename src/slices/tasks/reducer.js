@@ -6,10 +6,12 @@ import {
   deleteTask,
   getPrallelSession,
   addParallelSession,
+  getAllUsers,
 } from "./thunk";
 export const initialState = {
   taskList: [],
   sessionList: [],
+  allUsers: [],
 };
 
 const TasksSlice = createSlice({
@@ -26,6 +28,11 @@ const TasksSlice = createSlice({
       state.sessionList = action.payload;
       state.isParallelSessionCreated = false;
       state.isParallelSessionSuccess = true;
+    });
+    builder.addCase(getAllUsers.fulfilled, (state, action) => {
+      state.allUsers = action.payload;
+      state.isAllUserCreated = false;
+      state.isAllUserSuccess = true;
     });
     builder.addCase(getTaskList.rejected, (state, action) => {
       state.error = action.payload?.error || null;

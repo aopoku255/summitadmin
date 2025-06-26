@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   getTaskList as getTaskListApi,
   getParallelSession as getPrallelSessionApi,
+  getAllUsers as getAllUsersApi,
   addNewTask as addNewTaskApi,
   addParallelSession as addParallelSessionApi,
   updateTask as updateTaskApi,
@@ -33,6 +34,16 @@ export const getPrallelSession = createAsyncThunk(
     }
   }
 );
+
+export const getAllUsers = createAsyncThunk("tasks/getAllUsers", async () => {
+  try {
+    const response = await getAllUsersApi();
+    console.log(response?.data);
+    return response?.data;
+  } catch (error) {
+    return error;
+  }
+});
 
 export const addNewTask = createAsyncThunk("tasks/addNewTask", async (task) => {
   try {

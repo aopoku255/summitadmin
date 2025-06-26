@@ -59,6 +59,7 @@ export const GET_PROJECT_LIST = "/project/list";
 // Task
 export const GET_TASK_LIST = "/apps/task";
 export const GET_PARALLEL_SESSION = "/parallel/parallel-session";
+export const GET_ALL_USERS = "/user/get-allusers";
 export const ADD_NEW_TASK = "/apps/task";
 export const ADD_PARALLEL_SESSION = "/parallel/create-parallel-session";
 export const UPDATE_TASK = "/apps/task";

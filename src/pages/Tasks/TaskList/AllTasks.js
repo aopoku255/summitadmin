@@ -185,6 +185,8 @@ const AllTasks = () => {
           topic: values["task"],
           starttime: values["starttime"],
           endtime: values["endtime"],
+          hall: values["hall"],
+          zoomlink: values["zoomlink"],
           speakers: values.speakers,
         };
         // save new customer

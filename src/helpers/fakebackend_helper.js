@@ -173,6 +173,8 @@ export const getTaskList = () => api.get(url.GET_TASK_LIST);
 
 export const getParallelSession = () => api.get(url.GET_PARALLEL_SESSION);
 
+export const getAllUsers = () => api.get(url.GET_ALL_USERS);
+
 // add Task
 export const addNewTask = (task) => api.create(url.ADD_NEW_TASK, task);
 
