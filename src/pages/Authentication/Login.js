@@ -68,8 +68,8 @@ const Login = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      username: userLogin.username || "aopoku6" || "",
-      password: userLogin.password || "Prof@0545" || "",
+      username: userLogin.username || "" || "",
+      password: userLogin.password || "" || "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your username"),

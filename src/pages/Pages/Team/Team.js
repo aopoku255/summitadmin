@@ -377,6 +377,10 @@ const Team = () => {
                       <i className="ri-add-fill me-1 align-bottom"></i> Add
                       Speaker
                     </Button>
+                    <Button color="success">
+                      <i className="ri-add-fill me-1 align-bottom"></i> Bulk
+                      upload
+                    </Button>
                   </div>
                 </Col>
               </Row>
