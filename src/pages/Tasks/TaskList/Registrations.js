@@ -86,8 +86,22 @@ const Registrations = () => {
 
       {
         Header: "Action",
-        accessor: "checkin",
-        Cell: () => <Button disabled>Checkin</Button>,
+        id: "checkin_action",
+        accessor: (row) => row.checkins,
+        Cell: ({ row }) => {
+          const today = new Date().toDateString();
+          const checkins = row.original.checkins || [];
+
+          const hasCheckedInToday = checkins.some(
+            (c) => new Date(c.date).toDateString() === today
+          );
+
+          return (
+            <Button disabled={hasCheckedInToday}>
+              {hasCheckedInToday ? "Checked In" : "Checkin"}
+            </Button>
+          );
+        },
       },
     ];
   }, []);
