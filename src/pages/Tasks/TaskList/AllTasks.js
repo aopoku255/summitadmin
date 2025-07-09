@@ -197,6 +197,8 @@ const AllTasks = () => {
     },
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   // Update Data
   const handleCustomerClick = useCallback(
     (arg) => {
@@ -728,64 +730,78 @@ const AllTasks = () => {
 
               <Col lg={12}>
                 <Label className="form-label">Speakers</Label>
+
+                <Input
+                  type="text"
+                  placeholder="Search speaker by name..."
+                  className="mb-2"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+
                 <SimpleBar style={{ maxHeight: "95px" }}>
                   <ul className="list-unstyled vstack gap-2 mb-0">
-                    {teamData.map((item, key) => (
-                      <li key={key}>
-                        <div className="form-check d-flex align-items-center">
-                          <Input
-                            name="speakers"
-                            className="form-check-input me-3"
-                            type="checkbox"
-                            onChange={(e) => {
-                              const value = parseInt(e.target.value);
-                              const checked = e.target.checked;
-                              const prev = validation.values.speakers || [];
+                    {teamData
+                      .filter((item) =>
+                        `${item.fname} ${item.lname}`
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                      )
+                      .map((item, key) => (
+                        <li key={key}>
+                          <div className="form-check d-flex align-items-center">
+                            <Input
+                              name="speakers"
+                              className="form-check-input me-3"
+                              type="checkbox"
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                const checked = e.target.checked;
+                                const prev = validation.values.speakers || [];
 
-                              const updated = checked
-                                ? [...prev, value]
-                                : prev.filter((v) => v !== value);
+                                const updated = checked
+                                  ? [...prev, value]
+                                  : prev.filter((v) => v !== value);
 
-                              validation.setFieldValue("speakers", updated);
-                            }}
-                            onBlur={validation.handleBlur}
-                            value={item.id} // assuming item.id is already a number
-                            checked={validation.values.speakers?.includes(
-                              item.id
-                            )}
-                            invalid={
-                              validation.touched.speakers &&
-                              validation.errors.speakers
-                                ? true
-                                : false
-                            }
-                            id={item.id}
-                          />
+                                validation.setFieldValue("speakers", updated);
+                              }}
+                              onBlur={validation.handleBlur}
+                              value={item.id}
+                              checked={validation.values.speakers?.includes(
+                                item.id
+                              )}
+                              invalid={
+                                validation.touched.speakers &&
+                                validation.errors.speakers
+                              }
+                              id={item.id}
+                            />
 
-                          <Label
-                            className="form-check-label d-flex align-items-center"
-                            htmlFor={item?.image}
-                          >
-                            <span className="flex-shrink-0">
-                              <img
-                                src={`https://summitapi.cariscabusinessforum.com${item?.image}`}
-                                alt=""
-                                className="avatar-xxs rounded-circle"
-                              />
-                            </span>
-                            <span className="flex-grow-1 ms-2">
-                              {item.fname} {item.lname}
-                            </span>
-                          </Label>
-                          {validation.touched.speakers &&
-                          validation.errors.speakers ? (
-                            <FormFeedback type="invalid">
-                              {validation.errors.speakers}
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                      </li>
-                    ))}
+                            <Label
+                              className="form-check-label d-flex align-items-center"
+                              htmlFor={item?.image}
+                            >
+                              <span className="flex-shrink-0">
+                                <img
+                                  src={`https://summitapi.cariscabusinessforum.com${item?.image}`}
+                                  alt=""
+                                  className="avatar-xxs rounded-circle"
+                                />
+                              </span>
+                              <span className="flex-grow-1 ms-2">
+                                {item.fname} {item.lname}
+                              </span>
+                            </Label>
+
+                            {validation.touched.speakers &&
+                            validation.errors.speakers ? (
+                              <FormFeedback type="invalid">
+                                {validation.errors.speakers}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
                   </ul>
                 </SimpleBar>
               </Col>
