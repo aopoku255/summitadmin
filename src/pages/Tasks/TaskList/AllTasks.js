@@ -151,7 +151,7 @@ const AllTasks = () => {
     initialValues: {
       taskId: task && task.taskId,
       project: (task && task.project) || "",
-      hall: (task && task.hall) || "ROOM 1",
+      hall: (task && task.hall) || "N/A",
       zoomlink: (task && task.zoomlink) || "",
       task: (task && task.task) || "",
       starttime: (task && task.starttime) || "",
@@ -812,10 +812,10 @@ const AllTasks = () => {
                       : false
                   }
                 >
-                  <option value="ROOM 1">ROOM 1</option>
-                  <option value="ROOM 2">ROOM 2</option>
-                  <option value="ROOM 3">ROOM 3</option>
-                  <option value="ROOM 4">ROOM 4</option>
+                  <option value="N/A">N/A</option>
+                  <option value="Main Ballroom">Main Ballroom</option>
+                  <option value="Meeting Room 2">Meeting Room 2</option>
+                  <option value="Meeting Room 3">Meeting Room 3</option>
                 </Input>
                 {validation.touched.hall && validation.errors.hall ? (
                   <FormFeedback type="invalid">
@@ -833,7 +833,7 @@ const AllTasks = () => {
                   id="projectName-field"
                   className="form-control"
                   placeholder="Parallel session zoom link"
-                  type="text"
+                  type="select"
                   validate={{
                     required: { value: true },
                   }}
@@ -845,8 +845,18 @@ const AllTasks = () => {
                       ? true
                       : false
                   }
-                />
-
+                >
+                  <option value="N/A">N/A</option>
+                  <option value="https://carisca-knust-edu-gh.zoom.us/j/91995128977?pwd=zTGgNoBbmabPIxDOrKHtz5jsBqCdoD.1">
+                    Main Ballroom
+                  </option>
+                  <option value="https://carisca-knust-edu-gh.zoom.us/j/91704460837">
+                    Meeting Room 2
+                  </option>
+                  <option value="https://knust-edu-gh.zoom.us/j/92747617646?pwd=07UGfbjyfAoHvzYkqyarsghUHsEQtT.1">
+                    Meeting Room 3
+                  </option>
+                </Input>
                 {validation.touched.zoomlink && validation.errors.zoomlink ? (
                   <FormFeedback type="invalid">
                     {validation.errors.zoomlink}

@@ -138,12 +138,18 @@ const Team = () => {
   const handleTeamClick = useCallback(
     (arg) => {
       const teamMem = arg;
+      console.log("teamMem", teamMem);
       setTeamMem({
-        id: teamMem.id,
-        name: teamMem.name,
-        designation: teamMem.designation,
-        projectCount: teamMem.projectCount,
-        taskCount: teamMem.taskCount,
+        prefix: (teamMem && teamMem?.prefix) || "Prof.",
+        email: (teamMem && teamMem?.email) || "",
+        company: (teamMem && teamMem?.company) || "",
+        custom: (teamMem && teamMem?.designation) || "",
+        // image: (teamMem && teamMem?.image) || "",
+        fname: (teamMem && teamMem?.name.split(" ")[0]) || "",
+        lname: (teamMem && teamMem?.name.split(" ")[1]) || "",
+        linkedin: (teamMem && teamMem?.linkedin) || "",
+        designation: (teamMem && teamMem?.designation) || "Keynote Speaker",
+        bio: (teamMem && teamMem?.bio) || "",
       });
 
       setIsEdit(true);
