@@ -11,6 +11,7 @@ import {
   addParallelSession as addParallelSessionApi,
   updateTask as updateTaskApi,
   deleteTask as deleteTaskApi,
+  checkinUser as checkinUserApi,
 } from "../../helpers/fakebackend_helper";
 
 export const getTaskList = createAsyncThunk("tasks/getTaskList", async () => {
@@ -44,6 +45,19 @@ export const getAllUsers = createAsyncThunk("tasks/getAllUsers", async () => {
     return error;
   }
 });
+
+export const checkinUser = createAsyncThunk(
+  "tasks/checkinUser",
+  async (data) => {
+    try {
+      const response = await checkinUserApi(data);
+      console.log(response?.data);
+      return response?.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
 
 export const addNewTask = createAsyncThunk("tasks/addNewTask", async (task) => {
   try {

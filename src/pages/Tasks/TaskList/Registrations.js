@@ -1,10 +1,19 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
-import { Button, Card, CardBody } from "reactstrap";
+import {
+  Button,
+  Card,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "reactstrap";
 import TableContainer from "../../../Components/Common/TableContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "../../../slices/thunks";
+import { checkinUser, getAllUsers } from "../../../slices/thunks";
 import { createSelector } from "reselect";
+import { t } from "i18next";
 
 const Registrations = () => {
   document.title = "Registrations";
@@ -25,10 +34,27 @@ const Registrations = () => {
   const { allUsers, isAllUserSuccess } = useSelector(selectSessionProperties);
 
   const eventDays = [
-    new Date("2025-06-25"),
-    new Date("2025-06-26"),
-    new Date("2025-06-27"),
+    new Date("2025-07-09"),
+    new Date("2025-07-17"),
+    new Date("2025-07-18"),
   ];
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const toggleModal = () => setModalOpen(!modalOpen);
+
+  const handleCheckin = async (userId) => {
+    console.log("Checking in user with ID:", userId);
+    try {
+      await dispatch(checkinUser({ userId: userId, checkinType: "Walk-In" }));
+      dispatch(getAllUsers()); // refetch users after check-in
+    } catch (error) {
+      console.error("Check-in failed:", error);
+    } finally {
+      toggleModal();
+    }
+  };
 
   const columns = useMemo(() => {
     const renderCheckin = (value, dayIndex) => {
@@ -97,7 +123,13 @@ const Registrations = () => {
           );
 
           return (
-            <Button disabled={hasCheckedInToday}>
+            <Button
+              disabled={hasCheckedInToday}
+              onClick={() => {
+                setSelectedUser(row.original);
+                toggleModal();
+              }}
+            >
               {hasCheckedInToday ? "Checked In" : "Checkin"}
             </Button>
           );
@@ -127,6 +159,33 @@ const Registrations = () => {
               SearchPlaceholder="Search for tasks or something..."
             />
           </CardBody>
+          <Modal isOpen={modalOpen} toggle={toggleModal} centered={true}>
+            <ModalHeader toggle={toggleModal}>
+              Check-in Confirmation
+            </ModalHeader>
+            <ModalBody>
+              {selectedUser && (
+                <div>
+                  Are you sure you want to check in{" "}
+                  <strong>
+                    {selectedUser.first_name} {selectedUser.last_name}
+                  </strong>{" "}
+                  for today?
+                </div>
+              )}
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="primary"
+                onClick={() => handleCheckin(selectedUser?.id)}
+              >
+                Confirm
+              </Button>
+              <Button color="secondary" onClick={toggleModal}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
         </Card>
       </div>
     </React.Fragment>
