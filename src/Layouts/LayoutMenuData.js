@@ -228,13 +228,7 @@ const Navdata = () => {
       link: "/registrations",
       parentId: "dashboard",
     },
-    {
-      id: "crm",
-      label: "Resources",
-      icon: "las la-folder-plus",
-      link: "/dashboard",
-      parentId: "dashboard",
-    },
+
     {
       id: "crm",
       label: "Announcements",

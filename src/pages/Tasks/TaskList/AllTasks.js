@@ -39,6 +39,7 @@ import {
   DueDate,
   Status,
   Priority,
+  AssignedTo,
 } from "./TaskListCol";
 
 // Formik
@@ -174,10 +175,16 @@ const AllTasks = () => {
           sessionId: values["taskId"],
           name: values["project"],
           topic: values["task"],
+          starttime: values["starttime"],
+          endtime: values["endtime"],
+          hall: values["hall"],
+          zoomlink: values["zoomlink"],
+          speakers: values.speakers,
         };
         // update customer
-        dispatch(updateTask(updatedTask));
-        validation.resetForm();
+        // dispatch(updateTask(updatedTask));
+        // validation.resetForm();
+        console.log("Updated Task:", updatedTask);
       } else {
         const newTask = {
           sessionId: values["taskId"],
@@ -193,7 +200,7 @@ const AllTasks = () => {
         dispatch(addParallelSession(newTask));
         validation.resetForm();
       }
-      toggle();
+      // toggle();
     },
   });
 
@@ -214,6 +221,11 @@ const AllTasks = () => {
         status: task.status,
         priority: task.priority,
         subItem: task.subItem,
+        hall: task.hall,
+        zoomlink: task.zoomlink,
+        starttime: task.starttime,
+        endtime: task.endtime,
+        speakers: task.Speakers,
       });
 
       setIsEdit(true);
@@ -342,7 +354,7 @@ const AllTasks = () => {
                 <div className="flex-shrink-0 ms-4">
                   <ul className="list-inline tasks-list-menu mb-0">
                     <li className="list-inline-item">
-                      <Link to="/apps-tasks-details">
+                      <Link to="#">
                         <i className="ri-eye-fill align-bottom me-2 text-muted"></i>
                       </Link>
                     </li>
@@ -388,25 +400,8 @@ const AllTasks = () => {
         Header: "Speakers",
         accessor: "subItem",
         filterable: false,
-        Cell: (cell) => {
-          const assigned = cell.value.map((item) =>
-            item.image ? item.image : item
-          );
-          return (
-            <React.Fragment>
-              <div className="avatar-group">
-                {assigned.map((item, index) => (
-                  <Link key={index} to="#" className="avatar-group-item">
-                    <img
-                      src={`https://summitapi.cariscabusinessforum.com${item}`}
-                      alt=""
-                      className="rounded-circle avatar-xxs"
-                    />
-                  </Link>
-                ))}
-              </div>
-            </React.Fragment>
-          );
+        Cell: (cellProps) => {
+          return <AssignedTo {...cellProps} />;
         },
       },
       {
@@ -560,14 +555,14 @@ const AllTasks = () => {
                 }))}
                 isGlobalFilter={true}
                 isAddUserList={false}
-                customPageSize={8}
+                customPageSize={50}
                 className="custom-header-css"
                 divClass="table-responsive table-card mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
                 thClass="table-light text-muted"
                 handleTaskClick={handleTaskClicks}
-                isTaskListFilter={true}
+                isTaskListFilter={false}
                 SearchPlaceholder="Search for tasks or something..."
               />
 
@@ -891,7 +886,7 @@ const AllTasks = () => {
                       time: true,
                       timePattern: ["h", "m"],
                     }}
-                    value={validation.values.client}
+                    value={validation.values.starttime}
                     onChange={(e) =>
                       validation.setFieldValue("starttime", e.target.value)
                     }
@@ -910,7 +905,7 @@ const AllTasks = () => {
                       time: true,
                       timePattern: ["h", "m"],
                     }}
-                    value={validation.values.assigned}
+                    value={validation.values.endtime}
                     onChange={(e) =>
                       validation.setFieldValue("endtime", e.target.value)
                     }

@@ -490,7 +490,7 @@ const TicketsData = () => {
                 }))}
                 isGlobalFilter={true}
                 isAddUserList={false}
-                customPageSize={8}
+                customPageSize={30}
                 className="custom-header-css"
                 divClass="table-responsive table-card mb-3"
                 tableClass="align-middle table-nowrap mb-0"

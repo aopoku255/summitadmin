@@ -12,6 +12,8 @@ export const initialState = {
   taskList: [],
   sessionList: [],
   allUsers: [],
+  isAllUserSuccess: false, // ✅ Add this
+  isAllUserCreated: false,
 };
 
 const TasksSlice = createSlice({

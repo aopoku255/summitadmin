@@ -24,7 +24,7 @@ export const loginUser = (user, history) => async (dispatch) => {
         password: user.password,
       });
     } else if (process.env.REACT_APP_DEFAULTAUTH) {
-      response = postFakeLogin({
+      response = await postFakeLogin({
         username: user.username,
         password: user.password,
       });

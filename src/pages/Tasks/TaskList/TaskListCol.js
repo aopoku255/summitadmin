@@ -76,9 +76,13 @@ const AssignedTo = (cell) => {
             data-bs-toggle="tooltip"
             data-bs-trigger="hover"
             data-bs-placement="top"
-            title="Alexis"
+            title={`${item?.fname} ${item?.lname}`}
           >
-            <img src={item.img} alt="" className="rounded-circle avatar-xxs" />
+            <img
+              src={`https://summitapi.cariscabusinessforum.com${item.image}`}
+              alt=""
+              className="rounded-circle avatar-xxs"
+            />
           </Link>
         ))}
       </div>

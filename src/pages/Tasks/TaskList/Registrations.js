@@ -4,16 +4,20 @@ import {
   Button,
   Card,
   CardBody,
+  Col,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
 } from "reactstrap";
 import TableContainer from "../../../Components/Common/TableContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { checkinUser, getAllUsers } from "../../../slices/thunks";
 import { createSelector } from "reselect";
 import { t } from "i18next";
+import { set } from "lodash";
+import Loader from "../../../Components/Common/Loader";
 
 const Registrations = () => {
   document.title = "Registrations";
@@ -32,9 +36,10 @@ const Registrations = () => {
   );
   // Inside your component
   const { allUsers, isAllUserSuccess } = useSelector(selectSessionProperties);
+  console.log("allUsers", allUsers);
 
   const eventDays = [
-    new Date("2025-07-09"),
+    new Date("2025-07-16"),
     new Date("2025-07-17"),
     new Date("2025-07-18"),
   ];
@@ -43,14 +48,16 @@ const Registrations = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   const toggleModal = () => setModalOpen(!modalOpen);
+  const [loading, setLoading] = useState(false);
 
   const handleCheckin = async (userId) => {
-    console.log("Checking in user with ID:", userId);
+    setLoading(true);
     try {
       await dispatch(checkinUser({ userId: userId, checkinType: "Walk-In" }));
-      dispatch(getAllUsers()); // refetch users after check-in
+      dispatch(getAllUsers());
+      setLoading(false);
     } catch (error) {
-      console.error("Check-in failed:", error);
+      setLoading(false);
     } finally {
       toggleModal();
     }
@@ -146,16 +153,16 @@ const Registrations = () => {
           <CardBody>
             <TableContainer
               columns={columns}
-              data={allUsers}
+              data={allUsers || []}
               isGlobalFilter={true}
               isAddUserList={false}
-              customPageSize={8}
+              customPageSize={50}
               className="custom-header-css"
               divClass="table-responsive table-card mb-3"
               tableClass="align-middle table-nowrap mb-0"
               theadClass="table-light table-nowrap"
               thClass="table-light text-muted"
-              isTaskListFilter={true}
+              isTaskListFilter={false}
               SearchPlaceholder="Search for tasks or something..."
             />
           </CardBody>
@@ -175,12 +182,17 @@ const Registrations = () => {
               )}
             </ModalBody>
             <ModalFooter>
-              <Button
-                color="primary"
-                onClick={() => handleCheckin(selectedUser?.id)}
-              >
-                Confirm
-              </Button>
+              {loading ? (
+                <Loader />
+              ) : (
+                <Button
+                  color="primary"
+                  onClick={() => handleCheckin(selectedUser?.id)}
+                >
+                  Confirm
+                </Button>
+              )}
+
               <Button color="secondary" onClick={toggleModal}>
                 Cancel
               </Button>
