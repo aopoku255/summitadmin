@@ -39,9 +39,9 @@ const Registrations = () => {
   console.log("allUsers", allUsers);
 
   const eventDays = [
-    new Date("2025-07-16"),
-    new Date("2025-07-17"),
-    new Date("2025-07-18"),
+    new Date("2025-07-30"),
+    new Date("2025-07-31"),
+    new Date("2025-08-1"),
   ];
 
   const [modalOpen, setModalOpen] = useState(false);
