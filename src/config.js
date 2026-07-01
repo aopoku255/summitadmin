@@ -9,6 +9,7 @@ module.exports = {
   },
   api: {
     // API_URL: "http://localhost:8081/api/v1",
+    // API_URL: "https://summitapi.cariscabusinessforum.com/api/v1",
     API_URL: "https://apis.cariscabusinessforum.com/api/v1",
     // API_URL: "https://api-node.themesbrand.website",
   },
