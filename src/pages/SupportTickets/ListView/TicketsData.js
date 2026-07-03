@@ -76,15 +76,18 @@ const TicketsData = () => {
   const [deleteModalMulti, setDeleteModalMulti] = useState(false);
 
   const [modal, setModal] = useState(false);
+  const [speakerSearch, setSpeakerSearch] = useState("");
 
   const toggle = useCallback(() => {
     if (modal) {
       setModal(false);
       setTicket(null);
+      setSpeakerSearch("");
     } else {
       setModal(true);
       setcreDate(dateFormat());
       setdueDate(dateFormat());
+      setSpeakerSearch("");
     }
   }, [modal]);
 
@@ -426,7 +429,17 @@ const TicketsData = () => {
     (speakers) => speakers
   );
   // Inside your component
-  const teamData = useSelector(selectteamData);
+  const teamData = useSelector(selectteamData) || [];
+  const filteredTeamData = useMemo(() => {
+    const query = speakerSearch.trim().toLowerCase();
+
+    if (!query) return teamData;
+
+    return teamData.filter((item) => {
+      const fullName = `${item?.fname || ""} ${item?.lname || ""}`.toLowerCase();
+      return fullName.includes(query);
+    });
+  }, [speakerSearch, teamData]);
 
   return (
     <React.Fragment>
@@ -615,64 +628,75 @@ const TicketsData = () => {
               </Col>
               <Col lg={12}>
                 <Label className="form-label">Speakers</Label>
+                <Input
+                  type="text"
+                  className="form-control mb-2"
+                  placeholder="Search speakers"
+                  value={speakerSearch}
+                  onChange={(e) => setSpeakerSearch(e.target.value)}
+                />
                 <SimpleBar style={{ maxHeight: "95px" }}>
                   <ul className="list-unstyled vstack gap-2 mb-0">
-                    {teamData.map((item, key) => (
-                      <li key={key}>
-                        <div className="form-check d-flex align-items-center">
-                          <Input
-                            name="speakers"
-                            className="form-check-input me-3"
-                            type="checkbox"
-                            onChange={(e) => {
-                              const value = parseInt(e.target.value);
-                              const checked = e.target.checked;
-                              const prev = validation.values.speakers || [];
+                    {filteredTeamData.length > 0 ? (
+                      filteredTeamData.map((item, key) => (
+                        <li key={key}>
+                          <div className="form-check d-flex align-items-center">
+                            <Input
+                              name="speakers"
+                              className="form-check-input me-3"
+                              type="checkbox"
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                const checked = e.target.checked;
+                                const prev = validation.values.speakers || [];
 
-                              const updated = checked
-                                ? [...prev, value]
-                                : prev.filter((v) => v !== value);
+                                const updated = checked
+                                  ? [...prev, value]
+                                  : prev.filter((v) => v !== value);
 
-                              validation.setFieldValue("speakers", updated);
-                            }}
-                            onBlur={validation.handleBlur}
-                            value={item.id} // assuming item.id is already a number
-                            checked={validation.values.speakers?.includes(
-                              item.id
-                            )}
-                            invalid={
-                              validation.touched.speakers &&
-                              validation.errors.speakers
-                                ? true
-                                : false
-                            }
-                            id={item.id}
-                          />
+                                validation.setFieldValue("speakers", updated);
+                              }}
+                              onBlur={validation.handleBlur}
+                              value={item.id} // assuming item.id is already a number
+                              checked={validation.values.speakers?.includes(
+                                item.id
+                              )}
+                              invalid={
+                                validation.touched.speakers &&
+                                validation.errors.speakers
+                                  ? true
+                                  : false
+                              }
+                              id={item.id}
+                            />
 
-                          <Label
-                            className="form-check-label d-flex align-items-center"
-                            htmlFor={item?.image}
-                          >
-                            <span className="flex-shrink-0">
-                              <img
-                                src={`https://summitapi.cariscabusinessforum.com${item?.image}`}
-                                alt=""
-                                className="avatar-xxs rounded-circle"
-                              />
-                            </span>
-                            <span className="flex-grow-1 ms-2">
-                              {item.fname} {item.lname}
-                            </span>
-                          </Label>
-                          {validation.touched.speakers &&
-                          validation.errors.speakers ? (
-                            <FormFeedback type="invalid">
-                              {validation.errors.speakers}
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                      </li>
-                    ))}
+                            <Label
+                              className="form-check-label d-flex align-items-center"
+                              htmlFor={item?.image}
+                            >
+                              <span className="flex-shrink-0">
+                                <img
+                                  src={`https://summitapi.cariscabusinessforum.com${item?.image}`}
+                                  alt=""
+                                  className="avatar-xxs rounded-circle"
+                                />
+                              </span>
+                              <span className="flex-grow-1 ms-2">
+                                {item.fname} {item.lname}
+                              </span>
+                            </Label>
+                            {validation.touched.speakers &&
+                            validation.errors.speakers ? (
+                              <FormFeedback type="invalid">
+                                {validation.errors.speakers}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="text-muted small">No speakers found</li>
+                    )}
                   </ul>
                 </SimpleBar>
               </Col>
