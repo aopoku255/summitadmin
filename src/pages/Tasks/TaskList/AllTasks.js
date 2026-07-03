@@ -824,9 +824,10 @@ const AllTasks = () => {
                   }
                 >
                   <option value="N/A">N/A</option>
-                  <option value="Main Ballroom">Main Ballroom</option>
-                  <option value="Meeting Room 2">Meeting Room 2</option>
-                  <option value="Meeting Room 3">Meeting Room 3</option>
+                  <option value="Main Board Room">Main Board Room</option>
+                  <option value="Seminar Room 3">Seminar Room 3</option>
+                  <option value="Meeting Room 4">Meeting Room 4</option>
+                  <option value="Meeting Room 5">Meeting Room 5</option>
                 </Input>
                 {validation.touched.hall && validation.errors.hall ? (
                   <FormFeedback type="invalid">
